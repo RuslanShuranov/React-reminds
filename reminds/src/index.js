@@ -1,16 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import AppHeader from './components/AppHeader';
+import Search from './components/Search';
+import TodoList from './components/TodoList';
 
-const el = (
-    <div>
-        <h1>My Todo application</h1>
-        <input type="text" placeholder={'Search'}/>
-        <ul>
-            <li>Learn React</li>
-            <li>Learn Redux</li>
-            <li>Learn Webpack</li>
-        </ul>
-    </div>
-)
+const App = () => {
+    return (
+        <div>
+            <AppHeader/>
+            <Search/>
+            <TodoList/>
+        </div>
+    )
+}
 
-ReactDOM.render(el, document.getElementById('root'))
+ReactDOM.render(<App/>, document.getElementById('root'))
