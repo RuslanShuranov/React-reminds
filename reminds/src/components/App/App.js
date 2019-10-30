@@ -4,10 +4,12 @@ import AppHeader from '../AppHeader'
 import SearchPanel from '../SearchPanel'
 import ItemStatusFilter from '../ItemStatusFilter'
 import TodoList from '../TodoList'
+import AddTodoPanel from '../AddTodoPanel';
 
 import './App.css'
 
 export default class App extends React.Component {
+    maxId = 100;
 
     state =
         {
@@ -30,6 +32,21 @@ export default class App extends React.Component {
         })
     }
 
+    addNewTodo = (text) => {
+        const newTodo = {
+            id: this.maxId++,
+            label: text,
+            important: false
+        }
+
+
+        this.setState(({todos}) => {
+            return {
+                todos: [...todos, newTodo]
+            }
+        })
+    }
+
     render() {
 
         return (
@@ -41,6 +58,7 @@ export default class App extends React.Component {
                 </div>
 
                 <TodoList todos={this.state.todos} onDelete={this.deleteItem}/>
+                <AddTodoPanel addNewTodo={this.addNewTodo}/>
             </div>
         )
     }
