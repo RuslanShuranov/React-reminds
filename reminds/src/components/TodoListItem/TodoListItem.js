@@ -2,32 +2,56 @@ import React from 'react'
 
 import './TodoListItem.css'
 
-const TodoListItem = ({label, important}) => {
-
-    const style = {
-        color: important ? 'red' : 'black',
-        fontWeight: important ? 'bold' : 'normal'
+export default class TodoListItem extends React.Component {
+    state = {
+        done: false,
+        important: this.props.important
     }
 
-    return (
-        <span className="todo-list-item">
-          <span
-              className="todo-list-item-label"
-              style={style}>
-            {label}
-          </span>
+    onLabelClick = () => {
+        this.setState(({done}) => {
+            return ({done: !done})
+        })
+    }
 
-          <button type="button"
-                  className="btn btn-outline-success btn-sm float-right">
-            <i className="fa fa-exclamation"/>
-          </button>
+    importantHandle = () => {
+        this.setState(({important}) => {
+            return ({important: !important})
+        })
+    }
 
-          <button type="button"
-                  className="btn btn-outline-danger btn-sm float-right">
-            <i className="fa fa-trash-o"/>
-          </button>
-        </span>
-    )
+    render() {
+
+        const {label} = this.props
+        const {done, important} = this.state
+
+        let classNames = 'todo-list-item'
+
+        if (done) {
+            classNames += ' done'
+        }
+        if (important) {
+            classNames += ' important'
+        }
+
+        return (
+            <span className={classNames}>
+              <span
+                  className="todo-list-item-label"
+                  onClick={this.onLabelClick}>
+                {label}
+              </span>
+
+              <button type="button"
+                      className="btn btn-outline-success btn-sm float-right" onClick={this.importantHandle}>
+                <i className="fa fa-exclamation"/>
+              </button>
+
+              <button type="button"
+                      className="btn btn-outline-danger btn-sm float-right">
+                <i className="fa fa-trash-o"/>
+              </button>
+            </span>
+        )
+    }
 }
-
-export default TodoListItem
