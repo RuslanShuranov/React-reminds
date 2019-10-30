@@ -1,15 +1,24 @@
 import React from 'react'
+import TodoListItem from './TodoListItem';
+import './TodoList.css'
 
-export default class TodoList extends React.Component {
-    render() {
-        const todoList = ['Learn React', 'Learn Redux', 'Learn Webpack']
+const TodoList = ({todos}) => {
+
+    const elements = todos.map((item) => {
+        const {id, ...itemProps} = item;
+
         return (
-            <ul>
-                {todoList.map((item) => {
-                    console.log(item)
-                    return <li>{item}</li>
-                })}
-            </ul>
-        )
-    }
-}
+            <li key={id} className="list-group-item">
+                <TodoListItem {...itemProps} />
+            </li>
+        );
+    });
+
+    return (
+        <ul className="list-group todo-list">
+            {elements}
+        </ul>
+    );
+};
+
+export default TodoList;
