@@ -13,7 +13,7 @@ export default class AddTodoPanel extends React.Component {
                 <input type="text" className="form-control" placeholder="Type new todo"
                        aria-label="Add new todo" aria-describedby="basic-addon2"/>
                 <div className="input-group-append">
-                    <button className="btn btn-outline-success" type="button" onClick={() => addNewTodo('hello')}>Add</button>
+                    <button className="btn btn-outline-success" type="button" onClick={() => addNewTodo('hello')}><i className="fa fa-plus"/> Add</button>
                 </div>
             </div>
         )
