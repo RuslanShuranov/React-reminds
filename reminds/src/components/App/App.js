@@ -17,7 +17,8 @@ export default class App extends React.Component {
                 this.createTodoItem('Learn React'),
                 this.createTodoItem('Learn Redux'),
                 this.createTodoItem('Learn Webpack')
-            ]
+            ],
+            term: '',
         }
 
     toggleProperty(arr, id, propName) {
@@ -86,24 +87,39 @@ export default class App extends React.Component {
                 todos: this.toggleProperty(todos, id, 'done')
             }
         })
+    }
 
+    onSearch = (value) => {
+        this.setState({
+            term: value
+        })
+    }
 
+    search(items, term) {
+        if (term.length === 0) {
+            return items
+        }
+        return items.filter((item) => {
+            return item.label.toLowerCase()
+                .indexOf(term.toLowerCase()) > -1
+        })
     }
 
     render() {
-        const {todos} = this.state
+        const {todos, term} = this.state
         const doneCount = todos.filter((el) => el.done).length
         const todosCount = todos.length - doneCount
+        const visibleItems = this.search(todos, term)
 
         return (
             <div className="todo-app">
                 <AppHeader toDo={todosCount} done={doneCount}/>
                 <div className="top-panel d-flex">
-                    <SearchPanel/>
+                    <SearchPanel onSearch={this.onSearch}/>
                     <ItemStatusFilter/>
                 </div>
 
-                <TodoList todos={todos}
+                <TodoList todos={visibleItems}
                           onDelete={this.deleteItem}
                           onToggleImportant={this.onToggleImportant}
                           onToggleDone={this.onToggleDone}/>
