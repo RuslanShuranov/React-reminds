@@ -19,6 +19,7 @@ export default class App extends React.Component {
                 this.createTodoItem('Learn Webpack')
             ],
             term: '',
+            filter: 'active'
         }
 
     toggleProperty(arr, id, propName) {
@@ -89,9 +90,15 @@ export default class App extends React.Component {
         })
     }
 
-    onSearch = (value) => {
+    onSearchChange = (value) => {
         this.setState({
             term: value
+        })
+    }
+
+    onFilterChange = (value) => {
+        this.setState({
+            filter: value
         })
     }
 
@@ -105,18 +112,36 @@ export default class App extends React.Component {
         })
     }
 
+    filter(items, filter) {
+        switch (filter) {
+            case 'all': {
+                return items
+            }
+            case 'active': {
+                return items.filter((item) => !item.done)
+            }
+            case 'done': {
+                return items.filter((item) => item.done)
+            }
+            default:
+                return items
+        }
+    }
+
+
+
     render() {
-        const {todos, term} = this.state
+        const {todos, term, filter} = this.state
         const doneCount = todos.filter((el) => el.done).length
         const todosCount = todos.length - doneCount
-        const visibleItems = this.search(todos, term)
+        const visibleItems = this.filter(this.search(todos, term), filter)
 
         return (
             <div className="todo-app">
                 <AppHeader toDo={todosCount} done={doneCount}/>
                 <div className="top-panel d-flex">
-                    <SearchPanel onSearch={this.onSearch}/>
-                    <ItemStatusFilter/>
+                    <SearchPanel onSearchChange={this.onSearchChange}/>
+                    <ItemStatusFilter filter={filter} onFilterChange={this.onFilterChange}/>
                 </div>
 
                 <TodoList todos={visibleItems}
