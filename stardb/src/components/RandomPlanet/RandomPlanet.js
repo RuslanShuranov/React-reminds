@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import './RandomPlanet.css';
 import SwapiService from '../../services/swapi-service';
@@ -8,11 +8,13 @@ export default class RandomPlanet extends Component {
     swapiService = new SwapiService()
 
     state = {
-        id: null,
-        planetName: null,
-        population: null,
-        rotationPreiod: null,
-        diameter: null
+        planet: {
+            id: null,
+            planetName: null,
+            population: null,
+            rotationPreiod: null,
+            diameter: null
+        }
     }
 
     constructor() {
@@ -20,27 +22,23 @@ export default class RandomPlanet extends Component {
         this.updatePlanet()
     }
 
+    onPlanetLoaded = (planet) => {
+        this.setState({planet})
+    }
+
     updatePlanet() {
-        const id = Math.floor(Math.random()*25)+2
+        const id = Math.floor(Math.random() * 25) + 2
         this.swapiService
             .getPlanet(id)
-            .then((planet) => {
-                this.setState({
-                    id,
-                    planetName: planet.name,
-                    population: planet.population,
-                    rotationPeriod: planet.rotation_period,
-                    diameter: planet.diameter
-                })
-            })
+            .then(this.onPlanetLoaded)
     }
 
     render() {
-        const {id, planetName, population, rotationPeriod, diameter} = this.state
+        const {planet: {id, planetName, population, rotationPeriod, diameter}} = this.state
         return (
             <div className="random-planet jumbotron rounded">
                 <img className="planet-image"
-                     src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} />
+                     src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}/>
                 <div>
                     <h4>{planetName}</h4>
                     <ul className="list-group list-group-flush">
