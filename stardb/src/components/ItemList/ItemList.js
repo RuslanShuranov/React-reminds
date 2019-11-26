@@ -7,10 +7,8 @@ import Spinner from '../Spinner';
 
 export default class ItemList extends Component {
 
-    swapiServise = new SwapiService()
-
     state = {
-        peopleList: null
+        itemList: null
     }
 
     onError = (err) => {
@@ -20,11 +18,13 @@ export default class ItemList extends Component {
     }
 
     componentDidMount() {
-        this.swapiServise
-            .getPeople()
-            .then((peopleList) => {
+
+        const {getData} = this.props
+
+        getData()
+            .then((itemList) => {
                 this.setState({
-                    peopleList
+                    itemList
                 })
             })
             .catch(this.onError)
@@ -43,13 +43,13 @@ export default class ItemList extends Component {
     }
 
     render() {
-        const {peopleList, error} = this.state
+        const {itemList, error} = this.state
 
-        if (!peopleList) {
+        if (!itemList) {
             return <Spinner/>
         }
 
-        const items = this.renderItems(peopleList)
+        const items = this.renderItems(itemList)
         const errorIndicator = error ? <ErrorIndicator/> : null
         return (
             <ul className="item-list list-group">
